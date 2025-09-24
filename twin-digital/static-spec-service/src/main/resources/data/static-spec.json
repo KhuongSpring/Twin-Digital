@@ -1,0 +1,150 @@
+[
+  {
+    "groupName": "General",
+    "parameters": [
+      {"paramName": "modelName", "valueType": "STRING", "value": null},
+      {"paramName": "variant", "valueType": "STRING", "value": null},
+      {"paramName": "batteryCapacity", "valueType": "NUMBER", "value": 0},
+      {"paramName": "driveType", "valueType": "STRING", "value": null},
+      {"paramName": "motorType", "valueType": "STRING", "value": null}
+    ]
+  },
+  {
+    "groupName": "Dimension",
+    "parameters": [
+      {"paramName": "wheelbase", "valueType": "NUMBER", "value": 0},
+      {"paramName": "length", "valueType": "NUMBER", "value": 0},
+      {"paramName": "width", "valueType": "NUMBER", "value": 0},
+      {"paramName": "height", "valueType": "NUMBER", "value": 0},
+      {"paramName": "groundClearance", "valueType": "NUMBER", "value": 0},
+      {"paramName": "turningCircle", "valueType": "NUMBER", "value": 0},
+      {"paramName": "trunkCapacitySeatUp", "valueType": "NUMBER", "value": 0},
+      {"paramName": "trunkCapacitySeatDown", "valueType": "NUMBER", "value": 0},
+      {"paramName": "frunkCapacity", "valueType": "NUMBER", "value": 0}
+    ]
+  },
+  {
+    "groupName": "Weight",
+    "parameters": [
+      {"paramName": "curbWeight", "valueType": "NUMBER", "value": 0},
+      {"paramName": "payload", "valueType": "NUMBER", "value": 0},
+      {"paramName": "roofLoad", "valueType": "NUMBER", "value": 0},
+      {"paramName": "towingCapacityUnbraked", "valueType": "NUMBER", "value": 0},
+      {"paramName": "towingCapacityBraked", "valueType": "NUMBER", "value": 0}
+    ]
+  },
+  {
+    "groupName": "Powertrain",
+    "parameters": [
+      {"paramName": "maxPower", "valueType": "NUMBER", "value": 0},
+      {"paramName": "maxTorque", "valueType": "NUMBER", "value": 0},
+      {"paramName": "maxSpeed", "valueType": "NUMBER", "value": 0},
+      {"paramName": "acceleration_0_100", "valueType": "NUMBER", "value": 0},
+      {"paramName": "rangeEPA", "valueType": "NUMBER", "value": 0},
+      {"paramName": "chargingTimeFast", "valueType": "NUMBER", "value": 0},
+      {"paramName": "chargingStandard", "valueType": "STRING", "value": null},
+      {"paramName": "portableCharger", "valueType": "STRING", "value": null}
+    ]
+  },
+  {
+    "groupName": "Chassis",
+    "parameters": [
+      {"paramName": "frontSuspension", "valueType": "STRING", "value": null},
+      {"paramName": "rearSuspension", "valueType": "STRING", "value": null},
+      {"paramName": "brakes", "valueType": "STRING", "value": null},
+      {"paramName": "steeringAssist", "valueType": "STRING", "value": null},
+      {"paramName": "wheelSize", "valueType": "STRING", "value": null},
+      {"paramName": "tireType", "valueType": "STRING", "value": null},
+      {"paramName": "spareWheel", "valueType": "BOOLEAN", "value": false},
+      {"paramName": "inflatorKit", "valueType": "BOOLEAN", "value": false}
+    ]
+  },
+  {
+    "groupName": "Exterior",
+    "parameters": [
+      {"paramName": "headlamp", "valueType": "STRING", "value": null},
+      {"paramName": "drl", "valueType": "BOOLEAN", "value": false},
+      {"paramName": "fogLamp", "valueType": "BOOLEAN", "value": false},
+      {"paramName": "corneringLight", "valueType": "BOOLEAN", "value": false},
+      {"paramName": "welcomeLight", "valueType": "BOOLEAN", "value": false},
+      {"paramName": "signatureLights", "valueType": "BOOLEAN", "value": false},
+      {"paramName": "doorHandle", "valueType": "STRING", "value": null},
+      {"paramName": "doorLatch", "valueType": "STRING", "value": null},
+      {"paramName": "windows", "valueType": "STRING", "value": null},
+      {"paramName": "liftgate", "valueType": "STRING", "value": null},
+      {"paramName": "rearGlassHeated", "valueType": "BOOLEAN", "value": false},
+      {"paramName": "roofType", "valueType": "STRING", "value": null}
+    ]
+  },
+  {
+    "groupName": "Interior",
+    "parameters": [
+      {"paramName": "seatCapacity", "valueType": "NUMBER", "value": 0},
+      {"paramName": "seatMaterial", "valueType": "STRING", "value": null},
+      {"paramName": "driverSeat", "valueType": "STRING", "value": null},
+      {"paramName": "passengerSeat", "valueType": "STRING", "value": null},
+      {"paramName": "secondRowSeat", "valueType": "STRING", "value": null},
+      {"paramName": "thirdRowSeat", "valueType": "STRING", "value": null},
+      {"paramName": "captainChair", "valueType": "BOOLEAN", "value": false},
+      {"paramName": "steeringWheel", "valueType": "STRING", "value": null},
+      {"paramName": "infotainmentScreen", "valueType": "NUMBER", "value": 0},
+      {"paramName": "rearScreen", "valueType": "NUMBER", "value": 0},
+      {"paramName": "hud", "valueType": "BOOLEAN", "value": false},
+      {"paramName": "soundSystem", "valueType": "STRING", "value": null},
+      {"paramName": "ambientLighting", "valueType": "BOOLEAN", "value": false},
+      {"paramName": "wirelessCharger", "valueType": "BOOLEAN", "value": false},
+      {"paramName": "acType", "valueType": "STRING", "value": null},
+      {"paramName": "sunBlinds", "valueType": "BOOLEAN", "value": false}
+    ]
+  },
+  {
+    "groupName": "Safety",
+    "parameters": [
+      {"paramName": "airbags", "valueType": "NUMBER", "value": 0},
+      {"paramName": "isofix", "valueType": "BOOLEAN", "value": false},
+      {"paramName": "seatbeltPretensioners", "valueType": "BOOLEAN", "value": false},
+      {"paramName": "tpms", "valueType": "STRING", "value": null},
+      {"paramName": "immobilizer", "valueType": "BOOLEAN", "value": false},
+      {"paramName": "theftAlarm", "valueType": "BOOLEAN", "value": false},
+      {"paramName": "avas", "valueType": "BOOLEAN", "value": false}
+    ]
+  },
+  {
+    "groupName": "ADAS",
+    "parameters": [
+      {"paramName": "laneAssist", "valueType": "BOOLEAN", "value": false},
+      {"paramName": "laneDepartureWarning", "valueType": "BOOLEAN", "value": false},
+      {"paramName": "laneCenteringAssist", "valueType": "BOOLEAN", "value": false},
+      {"paramName": "trafficJamAssist", "valueType": "BOOLEAN", "value": false},
+      {"paramName": "highwayAssist", "valueType": "BOOLEAN", "value": false},
+      {"paramName": "adaptiveCruiseControl", "valueType": "BOOLEAN", "value": false},
+      {"paramName": "intelligentSpeedAdaptation", "valueType": "BOOLEAN", "value": false},
+      {"paramName": "trafficSignRecognition", "valueType": "BOOLEAN", "value": false},
+      {"paramName": "forwardCollisionWarning", "valueType": "BOOLEAN", "value": false},
+      {"paramName": "rearCrossTrafficAlert", "valueType": "BOOLEAN", "value": false},
+      {"paramName": "blindSpotDetection", "valueType": "BOOLEAN", "value": false},
+      {"paramName": "doorOpenWarning", "valueType": "BOOLEAN", "value": false},
+      {"paramName": "autoEmergencyBrake", "valueType": "BOOLEAN", "value": false},
+      {"paramName": "emergencyLaneKeepAssist", "valueType": "BOOLEAN", "value": false},
+      {"paramName": "parkingAssist", "valueType": "BOOLEAN", "value": false},
+      {"paramName": "surroundViewCamera", "valueType": "BOOLEAN", "value": false},
+      {"paramName": "autoHighBeam", "valueType": "BOOLEAN", "value": false}
+    ]
+  },
+  {
+    "groupName": "Connectivity",
+    "parameters": [
+      {"paramName": "vfStandardConnect", "valueType": "BOOLEAN", "value": false},
+      {"paramName": "vfPrimeConnect", "valueType": "BOOLEAN", "value": false},
+      {"paramName": "otaUpdate", "valueType": "BOOLEAN", "value": false},
+      {"paramName": "appleCarPlay", "valueType": "BOOLEAN", "value": false},
+      {"paramName": "androidAuto", "valueType": "BOOLEAN", "value": false},
+      {"paramName": "virtualAssistant", "valueType": "BOOLEAN", "value": false},
+      {"paramName": "smartHomeControl", "valueType": "BOOLEAN", "value": false},
+      {"paramName": "videoStreaming", "valueType": "BOOLEAN", "value": false},
+      {"paramName": "games", "valueType": "BOOLEAN", "value": false},
+      {"paramName": "webBrowser", "valueType": "BOOLEAN", "value": false},
+      {"paramName": "eSIM", "valueType": "BOOLEAN", "value": false}
+    ]
+  }
+]
