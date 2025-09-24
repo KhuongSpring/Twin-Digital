@@ -1,0 +1,92 @@
+[
+  {
+    "groupName": "Driving Status",
+    "parameters": [
+      { "paramName": "speed", "valueType": "NUMBER" },
+      { "paramName": "rpm", "valueType": "NUMBER" },
+      { "paramName": "gear", "valueType": "STRING" },
+      { "paramName": "odometer", "valueType": "NUMBER" },
+      { "paramName": "tripDistance", "valueType": "NUMBER" },
+      { "paramName": "driveMode", "valueType": "STRING" }
+    ]
+  },
+  {
+    "groupName": "Battery & Energy",
+    "parameters": [
+      { "paramName": "batteryLevel", "valueType": "NUMBER" },
+      { "paramName": "chargingStatus", "valueType": "STRING" },
+      { "paramName": "rangeRemaining", "valueType": "NUMBER" },
+      { "paramName": "batteryTemperature", "valueType": "NUMBER" },
+      { "paramName": "chargingPower", "valueType": "NUMBER" },
+      { "paramName": "chargingTimeRemaining", "valueType": "NUMBER" },
+      { "paramName": "energyConsumption", "valueType": "NUMBER" }
+    ]
+  },
+  {
+    "groupName": "Engine & Powertrain",
+    "parameters": [
+      { "paramName": "motorPower", "valueType": "NUMBER" },
+      { "paramName": "motorTemperature", "valueType": "NUMBER" },
+      { "paramName": "torqueOutput", "valueType": "NUMBER" },
+      { "paramName": "coolantTemperature", "valueType": "NUMBER" },
+      { "paramName": "oilPressure", "valueType": "NUMBER" }
+    ]
+  },
+  {
+    "groupName": "Braking & Safety",
+    "parameters": [
+      { "paramName": "brakeStatus", "valueType": "STRING" },
+      { "paramName": "absActive", "valueType": "STRING" },
+      { "paramName": "brakePadWear", "valueType": "NUMBER" },
+      { "paramName": "brakeTemperature", "valueType": "NUMBER" },
+      { "paramName": "airbagStatus", "valueType": "STRING" }
+    ]
+  },
+  {
+    "groupName": "Tires & Wheels",
+    "parameters": [
+      { "paramName": "tirePressure", "valueType": "NUMBER" },
+      { "paramName": "tireTemperature", "valueType": "NUMBER" },
+      { "paramName": "tpmsWarning", "valueType": "STRING" }
+    ]
+  },
+  {
+    "groupName": "Location & Connectivity",
+    "parameters": [
+      { "paramName": "gps.latitude", "valueType": "NUMBER" },
+      { "paramName": "gps.longitude", "valueType": "NUMBER" },
+      { "paramName": "gps.speed", "valueType": "NUMBER" },
+      { "paramName": "signalStrength", "valueType": "NUMBER" },
+      { "paramName": "gps.altitude", "valueType": "NUMBER" },
+      { "paramName": "gps.heading", "valueType": "NUMBER" },
+      { "paramName": "networkStatus", "valueType": "STRING" },
+      { "paramName": "otaStatus", "valueType": "STRING" }
+    ]
+  },
+  {
+    "groupName": "Cabin & Comfort",
+    "parameters": [
+      { "paramName": "doorStatus.front_left", "valueType": "STRING" },
+      { "paramName": "doorStatus.front_right", "valueType": "STRING" },
+      { "paramName": "doorStatus.rear_left", "valueType": "STRING" },
+      { "paramName": "doorStatus.rear_right", "valueType": "STRING" },
+      { "paramName": "doorStatus.trunk", "valueType": "STRING" },
+      { "paramName": "lockStatus", "valueType": "STRING" },
+      { "paramName": "acStatus", "valueType": "STRING" },
+      { "paramName": "cabinTemperature", "valueType": "NUMBER" },
+      { "paramName": "seatHeating", "valueType": "STRING" },
+      { "paramName": "headlightStatus", "valueType": "STRING" }
+    ]
+  },
+  {
+    "groupName": "Faults & Alerts",
+    "parameters": [
+      { "paramName": "checkEngine", "valueType": "STRING" },
+      { "paramName": "batteryFault", "valueType": "STRING" },
+      { "paramName": "brakeFault", "valueType": "STRING" },
+      { "paramName": "coolingFault", "valueType": "STRING" },
+      { "paramName": "motorOverheat", "valueType": "STRING" },
+      { "paramName": "tireLeak", "valueType": "STRING" }
+    ]
+  }
+]
