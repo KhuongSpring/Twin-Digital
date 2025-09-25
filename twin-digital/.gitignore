@@ -1,0 +1,5 @@
+# Ignore all env files in any subfolder
+*.env
+
+# Nếu chỉ muốn ignore env trong config-repo, nhưng vẫn cho phép service có file khác
+/config-repo/*.env
