@@ -60,6 +60,9 @@ public class ErrorMessage {
     public static final String ERR_GET_ALL_GROUPS_FAIL = "exception.static.spec.get.all.groups.fail";
     public static final String ERR_NO_GROUPS_FOUND = "exception.static.spec.no.groups.found";
     public static final String ERR_RESET_PARAMETERS_FAIL = "exception.static.spec.reset.parameters.fail";
+
+    public static final String ERR_CAR_MODEL_REQUIRED = "exception.car.model.required";
+    public static final String ERR_CAR_MODEL_INVALID_FORMAT = "exception.car.model.invalid-format";
   }
 
 }

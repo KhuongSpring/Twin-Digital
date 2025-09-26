@@ -9,8 +9,7 @@ import org.example.staticspecservice.base.RestApiV1;
 import org.example.staticspecservice.base.VsResponseUtil;
 import org.example.staticspecservice.constant.SuccessMessage;
 import org.example.staticspecservice.constant.UrlConstant;
-import org.example.staticspecservice.domain.dto.request.ResetStaticSpecRequestDto;
-import org.example.staticspecservice.domain.dto.request.StaticParameterImportRequestDto;
+import org.example.staticspecservice.domain.dto.request.CarModelImportRequestDto;
 import org.example.staticspecservice.domain.dto.response.StaticSpecGroupResponseDto;
 import org.example.staticspecservice.service.StaticSpecService;
 import org.springframework.http.ResponseEntity;
@@ -33,7 +32,7 @@ public class StaticSpecController {
             description = "Dùng để nhập thông số kỹ thuật của xe vào hệ thống"
     )
     @PostMapping(value = UrlConstant.StaticSpec.IMPORT_CAR_SPECIFICATION)
-    public ResponseEntity<?> importCarSpecification(@RequestBody StaticParameterImportRequestDto request) {
+    public ResponseEntity<?> importCarSpecification(@RequestBody CarModelImportRequestDto request) {
         staticSpecService.importCarSpecification(request);
         return VsResponseUtil.success(SuccessMessage.StaticSpec.IMPORT_CAR_SPEC_SUCCESS);
     }
@@ -53,8 +52,8 @@ public class StaticSpecController {
             description = "Dùng để reset các thông số kỹ thuật được chọn về trạng thái ban đầu (null)"
     )
     @PostMapping(value = UrlConstant.StaticSpec.RESET_PARAMETERS)
-    public ResponseEntity<?> resetStaticSpecParameters(@RequestBody ResetStaticSpecRequestDto request) {
-        staticSpecService.resetStaticSpecParameters(request);
+    public ResponseEntity<?> resetStaticSpecParameters() {
+        staticSpecService.resetStaticSpecParameters();
         return VsResponseUtil.success(SuccessMessage.StaticSpec.RESET_PARAMETERS_SUCCESS);
     }
 }

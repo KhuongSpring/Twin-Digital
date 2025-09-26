@@ -6,8 +6,7 @@ import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 
 import org.example.staticspecservice.constant.ErrorMessage;
-import org.example.staticspecservice.domain.dto.request.ResetStaticSpecRequestDto;
-import org.example.staticspecservice.domain.dto.request.StaticParameterImportRequestDto;
+import org.example.staticspecservice.domain.dto.request.CarModelImportRequestDto;
 import org.example.staticspecservice.domain.dto.response.StaticParameterResponseDto;
 import org.example.staticspecservice.domain.dto.response.StaticSpecGroupResponseDto;
 import org.example.staticspecservice.domain.entity.StaticSpecGroup;
@@ -15,10 +14,10 @@ import org.example.staticspecservice.domain.entity.StaticSpecParameter;
 import org.example.staticspecservice.repository.StaticSpecGroupRepository;
 import org.example.staticspecservice.repository.StaticSpecParameterRepository;
 import org.example.staticspecservice.service.StaticSpecService;
+import org.example.staticspecservice.util.CarSpecFileReader;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -34,20 +33,21 @@ public class StaticSpecServiceImpl implements StaticSpecService {
 
     StaticSpecGroupRepository groupRepository;
 
+    CarSpecFileReader carSpecFileReader;
+
     private static final Map<String, String> FIELD_TO_GROUP_MAP = new HashMap<>();
 
     @Override
     @Transactional
-    public void importCarSpecification(StaticParameterImportRequestDto request) {
+    public void importCarSpecification(CarModelImportRequestDto request) {
         try {
+            Map<String, Object> specData = carSpecFileReader.readCarSpecFromFile(request.getCarModelName());
+
             List<StaticSpecParameter> parametersToUpdate = new ArrayList<>();
 
-            Field[] fields = StaticParameterImportRequestDto.class.getDeclaredFields();
-
-            for (Field field : fields) {
-                field.setAccessible(true);
-                String fieldName = field.getName();
-                Object value = field.get(request);
+            for (Map.Entry<String, Object> entry : specData.entrySet()) {
+                String fieldName = entry.getKey();
+                Object value = entry.getValue();
 
                 if (value == null) {
                     continue;
@@ -112,7 +112,6 @@ public class StaticSpecServiceImpl implements StaticSpecService {
 
     private StaticSpecGroupResponseDto mapToGroupResponseDto(StaticSpecGroup group) {
         List<StaticParameterResponseDto> parameterDtos = group.getParameterList().stream()
-                .filter(this::shouldIncludeParameter)
                 .map(this::mapToParameterResponseDto)
                 .toList();
 
@@ -123,17 +122,6 @@ public class StaticSpecServiceImpl implements StaticSpecService {
                 .build();
     }
 
-    private boolean shouldIncludeParameter(StaticSpecParameter parameter){
-        String stringValue = parameter.getStringValue();
-        if(stringValue != null && !stringValue.isBlank()) return true;
-        Double doubleValue = parameter.getDoubleValue();
-        if(doubleValue != null) return true;
-        Boolean booleanValue = parameter.getBooleanValue();
-        if(booleanValue != null) return true;
-
-        return false;
-
-    }
 
     private StaticParameterResponseDto mapToParameterResponseDto(StaticSpecParameter parameter) {
         return StaticParameterResponseDto.builder()
@@ -148,14 +136,9 @@ public class StaticSpecServiceImpl implements StaticSpecService {
     }
 
     @Override
-    @Transactional
-    public void resetStaticSpecParameters(ResetStaticSpecRequestDto request) {
+    public void resetStaticSpecParameters() {
         try {
-            List<Long> parameterIds = request.getIdParam().stream()
-                    .map(Long::valueOf)
-                    .toList();
-
-            List<StaticSpecParameter> parameters = parameterRepository.findAllById(parameterIds);
+            List<StaticSpecParameter> parameters = parameterRepository.findAll();
 
             if (parameters.isEmpty()) {
                 return;
