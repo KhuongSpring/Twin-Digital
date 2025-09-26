@@ -1,9 +1,8 @@
 package org.example.staticspecservice;
 
 import lombok.RequiredArgsConstructor;
-import org.example.staticspecservice.config.DotenvInitializer;
+import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.core.env.Environment;
 import lombok.extern.log4j.Log4j2;
 
@@ -13,11 +12,7 @@ import lombok.extern.log4j.Log4j2;
 public class StaticSpecServiceApplication {
 
     public static void main(String[] args) {
-        Environment env = new SpringApplicationBuilder(StaticSpecServiceApplication.class)
-                .initializers(new DotenvInitializer())
-                .run(args)
-                .getEnvironment();
-
+        Environment env = SpringApplication.run(StaticSpecServiceApplication.class, args).getEnvironment();
         String appName = env.getProperty("spring.application.name");
         if (appName != null) {
             appName = appName.toUpperCase();

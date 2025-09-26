@@ -1,102 +1,58 @@
 {
-  "model": "VF3",
-  "variant": "Base",
-  "modelYear": null,
-  "vehicleClass": "A-SUV",
-  "battery": {
-    "chemistry": "LFP",
-    "capacity_kwh": 18.64
-  },
-  "power": {
-    "max_kw": 30
-  },
-  "torque": {
-    "max_nm": 110
-  },
-  "range": {
-    "nedc_km": 215,
-    "note": "Manufacturer sheet cites NEDC range; real-world may differ."
-  },
-  "charging": {
-    "time_dc_10_70_min": 36
-  },
-  "drivetrain": {
-    "layout": "RWD"
-  },
-  "dimensions": {
-    "length_mm": 3190,
-    "width_mm": 1679,
-    "height_mm": 1652,
-    "wheelbase_mm": 2075,
-    "turning_circle_m": 9
-  },
-  "weight": {
-    "curb_kg": 857,
-    "payload_kg": 300,
-    "roof_load_kg": 50
-  },
-  "cargo": {
-    "trunk_l": 285,
-    "trunk_l_rear_seats_folded": 550
-  },
-  "wheels": {
-    "size_in": 16
-  },
-  "tires": {
-    "front": "175/75R16",
-    "rear": "175/75R16"
-  },
-  "suspension": {
-    "front": "MacPherson, independent",
-    "rear": "Rigid axle with Panhard rod"
-  },
-  "brakes": {
-    "front": "Disc, ventilated",
-    "rear": "Drum"
-  },
-  "steering": {
-    "type": "Mechanical"
-  },
-  "lighting": {
-    "headlamp": "Halogen",
-    "daytime_running": "Halogen"
-  },
-  "seats": {
-    "count": 4
-  },
-  "infotainment": {
-    "screen_in": 10
-  },
-  "safety": {
-    "abs": true,
-    "hsa": true,
-    "tcs": true,
-    "rear_parking_sensors": true,
-    "rear_camera": true
-  },
-  "specVersion": 1,
-  "source": "Manufacturer VF3 Vietnamese spec sheet",
-  "sourceDate": null,
-  "notes": [
-    "Charging time noted as 10-70% in 36 minutes",
-    "NEDC range 215 km",
-    "Some values not present in image left null"
-  ],
-  "ambiguousFields": [
-    {
-      "field": "battery.capacity_kwh",
-      "reason": "Not explicitly listed on image",
-      "confidence": 0.2
-    },
-    {
-      "field": "ac_charger.max_power_kw",
-      "reason": "Not listed",
-      "confidence": 0.2
-    },
-    {
-      "field": "dc_charger.max_power_kw",
-      "reason": "Not listed",
-      "confidence": 0.2
-    }
-  ]
+  "modelName": "VF3",
+  "variant": "Normal",
+  "batteryCapacity": 18.64,
+  "driveType": "RWD",
+  "motorType": "Electric",
+  "wheelbase": 2075.0,
+  "length": 3190.0,
+  "width": 1679.0,
+  "height": 1652.0,
+  "groundClearance": 175.0,
+  "turningCircle": 9.0,
+  "trunkCapacitySeatUp": 285.0,
+  "trunkCapacitySeatDown": 857.0,
+  "frunkCapacity": 36.0,
+  "curbWeight": 857.0,
+  "payload": 300.0,
+  "roofLoad": 50.0,
+  "maxPower": 30.0,
+  "maxTorque": 110.0,
+  "maxSpeed": 100.0,
+  "rangeEPA": 215.0,
+  "chargingTimeFast": 36.0,
+  "chargingStandard": "CCS2",
+  "frontSuspension": "Independent, MacPherson",
+  "rearSuspension": "Rigid axle with Panhard rod",
+  "brakes": "Front Disc, Rear Drum",
+  "steeringAssist": "EPS",
+  "wheelSize": "16 inch",
+  "tireType": "175/75R16",
+  "inflatorKit": true,
+  "headlamp": "Halogen",
+  "drl": true,
+  "doorHandle": "Conventional",
+  "windows": "Manual",
+  "liftgate": "Manual",
+  "seatCapacity": 4.0,
+  "seatMaterial": "Fabric",
+  "driverSeat": "4-way Manual",
+  "passengerSeat": "4-way Manual",
+  "secondRowSeat": "Fixed backrest, headrests",
+  "steeringWheel": "Manual, with horn",
+  "infotainmentScreen": 10.0,
+  "soundSystem": "2 speakers",
+  "acType": "Single Zone, manual, PM2.5 filter",
+  "airbags": 2,
+  "isofix": true,
+  "seatbeltPretensioners": true,
+  "immobilizer": true,
+  "theftAlarm": true,
+  "parkingAssist": true,
+  "vfStandardConnect": true,
+  "otaUpdate": true,
+  "appleCarPlay": true,
+  "androidAuto": true,
+  "virtualAssistant": true,
+  "webBrowser": true
 }

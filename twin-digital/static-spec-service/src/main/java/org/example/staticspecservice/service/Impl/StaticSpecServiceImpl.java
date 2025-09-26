@@ -112,6 +112,7 @@ public class StaticSpecServiceImpl implements StaticSpecService {
 
     private StaticSpecGroupResponseDto mapToGroupResponseDto(StaticSpecGroup group) {
         List<StaticParameterResponseDto> parameterDtos = group.getParameterList().stream()
+                .filter(this::shouldIncludeParameter)
                 .map(this::mapToParameterResponseDto)
                 .toList();
 
@@ -120,6 +121,18 @@ public class StaticSpecServiceImpl implements StaticSpecService {
                 .groupName(group.getGroupName())
                 .parameters(parameterDtos)
                 .build();
+    }
+
+    private boolean shouldIncludeParameter(StaticSpecParameter parameter){
+        String stringValue = parameter.getStringValue();
+        if(stringValue != null && !stringValue.isBlank()) return true;
+        Double doubleValue = parameter.getDoubleValue();
+        if(doubleValue != null) return true;
+        Boolean booleanValue = parameter.getBooleanValue();
+        if(booleanValue != null) return true;
+
+        return false;
+
     }
 
     private StaticParameterResponseDto mapToParameterResponseDto(StaticSpecParameter parameter) {
