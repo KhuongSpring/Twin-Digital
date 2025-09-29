@@ -3,20 +3,30 @@ package com.example.dynamic_spec_service.service.impl;
 import com.example.dynamic_spec_service.domain.dto.request.DynamicParameterEnterRequestDto;
 import com.example.dynamic_spec_service.domain.dto.request.ResetDynamicSpecRequestDto;
 import com.example.dynamic_spec_service.domain.dto.response.DynamicSpecGroupResponseDto;
+import com.example.dynamic_spec_service.domain.dto.response.DynamicSpecProducerResponseDto;
 import com.example.dynamic_spec_service.domain.entity.DynamicParameter;
 import com.example.dynamic_spec_service.domain.entity.ValueType;
 import com.example.dynamic_spec_service.domain.mapper.DynamicSpecMapper;
 import com.example.dynamic_spec_service.repository.DynamicParameterRepository;
 import com.example.dynamic_spec_service.repository.DynamicSpecGroupRepository;
 import com.example.dynamic_spec_service.service.DynamicSpecService;
+import com.fasterxml.jackson.databind.JsonSerializer;
+import com.fasterxml.jackson.databind.ser.std.StringSerializer;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.apache.kafka.clients.producer.ProducerConfig;
+import org.springframework.context.annotation.Bean;
 import org.springframework.data.domain.Sort;
+import org.springframework.kafka.core.DefaultKafkaProducerFactory;
+import org.springframework.kafka.core.KafkaTemplate;
+import org.springframework.kafka.core.ProducerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 @AllArgsConstructor
@@ -28,6 +38,8 @@ public class DynamicSpecServiceImpl implements DynamicSpecService {
     DynamicSpecGroupRepository dynamicSpecGroupRepository;
 
     DynamicSpecMapper dynamicSpecMapper;
+
+    KafkaTemplate<String, DynamicSpecProducerResponseDto> kafkaTemplate;
 
     @Override
     public List<DynamicSpecGroupResponseDto> enterSpec(DynamicParameterEnterRequestDto request) throws IllegalAccessException {
@@ -57,7 +69,10 @@ public class DynamicSpecServiceImpl implements DynamicSpecService {
 
     @Override
     public List<DynamicSpecGroupResponseDto> getSpec() {
-        return dynamicSpecMapper.toGroupDtoList(dynamicSpecGroupRepository.findAll());
+        List<DynamicSpecGroupResponseDto> specs = dynamicSpecMapper.toGroupDtoList(dynamicSpecGroupRepository.findAll());
+        DynamicSpecProducerResponseDto result = new DynamicSpecProducerResponseDto(specs);
+        kafkaTemplate.send("dynamic-spec-service", result);
+        return specs;
     }
 
     @Override
