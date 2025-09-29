@@ -14,7 +14,8 @@ public class DynamicSpecConsumer {
 
     @KafkaListener(topics = "dynamic-spec-topic", groupId = "aggregator-group")
     public void listen(DynamicSpecProducerResponseDto specs) {
-        System.out.println("Aggregator received dynamic specs: " + specs.getSpecs());
+        System.out.println("CHECK");
+        System.out.println("Aggregator received dynamic specs: " + specs.getSpecs().getFirst().getGroupName());
         cache.put("latest", specs);
     }
 
