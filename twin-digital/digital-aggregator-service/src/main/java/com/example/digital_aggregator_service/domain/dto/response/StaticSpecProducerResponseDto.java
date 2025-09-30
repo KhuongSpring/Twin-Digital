@@ -10,10 +10,8 @@ import java.util.List;
 @Setter
 @Getter
 @FieldDefaults(level = AccessLevel.PRIVATE)
-@Builder
-public class AggregatorSpecResponseDto {
+public class StaticSpecProducerResponseDto {
 
-    StaticSpecProducerResponseDto staticSpecs;
+    List<StaticSpecGroupResponseDto> specs;
 
-    DynamicSpecProducerResponseDto dynamicSpecs;
 }
