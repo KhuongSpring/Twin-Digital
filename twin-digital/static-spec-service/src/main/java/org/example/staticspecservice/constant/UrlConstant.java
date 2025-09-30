@@ -44,7 +44,7 @@ public class UrlConstant {
     private static final String PRE_FIX = "/static-spec";
 
     public static final String IMPORT_CAR_SPECIFICATION = PRE_FIX + "/import";
-    public static final String GET_ALL_GROUPS = PRE_FIX + "/groups";
+    public static final String GET_ALL_GROUPS = PRE_FIX;
     public static final String RESET_PARAMETERS = PRE_FIX + "/reset";
 
     private StaticSpec() {

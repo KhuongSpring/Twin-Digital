@@ -9,12 +9,14 @@ import org.example.staticspecservice.constant.ErrorMessage;
 import org.example.staticspecservice.domain.dto.request.CarModelImportRequestDto;
 import org.example.staticspecservice.domain.dto.response.StaticParameterResponseDto;
 import org.example.staticspecservice.domain.dto.response.StaticSpecGroupResponseDto;
+import org.example.staticspecservice.domain.dto.response.StaticSpecProducerResponseDto;
 import org.example.staticspecservice.domain.entity.StaticSpecGroup;
 import org.example.staticspecservice.domain.entity.StaticSpecParameter;
 import org.example.staticspecservice.repository.StaticSpecGroupRepository;
 import org.example.staticspecservice.repository.StaticSpecParameterRepository;
 import org.example.staticspecservice.service.StaticSpecService;
 import org.example.staticspecservice.util.CarSpecFileReader;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -34,6 +36,8 @@ public class StaticSpecServiceImpl implements StaticSpecService {
     StaticSpecGroupRepository groupRepository;
 
     CarSpecFileReader carSpecFileReader;
+
+    KafkaTemplate<String, StaticSpecProducerResponseDto> kafkaTemplate;
 
     private static final Map<String, String> FIELD_TO_GROUP_MAP = new HashMap<>();
 
@@ -102,6 +106,8 @@ public class StaticSpecServiceImpl implements StaticSpecService {
                     .map(this::mapToGroupResponseDto)
                     .toList();
 
+            StaticSpecProducerResponseDto producerResponse = new StaticSpecProducerResponseDto(responseDto);
+            kafkaTemplate.send("static-spec-topic", producerResponse);
             return responseDto;
 
         } catch (Exception e) {

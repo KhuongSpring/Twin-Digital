@@ -28,8 +28,8 @@ public class StaticSpecController {
     StaticSpecService staticSpecService;
 
     @Operation(
-            summary = "Import thông số kỹ thuật xe",
-            description = "Dùng để nhập thông số kỹ thuật của xe vào hệ thống"
+            summary = "Import thông số tĩnh",
+            description = "Dùng để nhập thông số tĩnh của xe vào hệ thống"
     )
     @PostMapping(value = UrlConstant.StaticSpec.IMPORT_CAR_SPECIFICATION)
     public ResponseEntity<?> importCarSpecification(@RequestBody CarModelImportRequestDto request) {
@@ -38,8 +38,8 @@ public class StaticSpecController {
     }
 
     @Operation(
-            summary = "Lấy tất cả nhóm thông số kỹ thuật",
-            description = "Dùng để lấy tất cả nhóm thông số kỹ thuật cùng với các tham số của từng nhóm"
+            summary = "Lấy tất cả nhóm thông số tĩnh",
+            description = "Dùng để lấy tất cả nhóm thông số tĩnh cùng với các tham số của từng nhóm"
     )
     @GetMapping(value = UrlConstant.StaticSpec.GET_ALL_GROUPS)
     public ResponseEntity<?> getAllStaticSpecGroups() {
@@ -48,8 +48,8 @@ public class StaticSpecController {
     }
 
     @Operation(
-            summary = "Reset thông số kỹ thuật về trạng thái ban đầu",
-            description = "Dùng để reset các thông số kỹ thuật được chọn về trạng thái ban đầu (null)"
+            summary = "Reset thông số tĩnh về trạng thái ban đầu",
+            description = "Dùng để reset các thông số tĩnh về trạng thái ban đầu"
     )
     @PostMapping(value = UrlConstant.StaticSpec.RESET_PARAMETERS)
     public ResponseEntity<?> resetStaticSpecParameters() {
