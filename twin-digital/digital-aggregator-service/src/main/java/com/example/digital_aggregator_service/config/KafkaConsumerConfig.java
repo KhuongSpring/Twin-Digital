@@ -5,8 +5,8 @@ import com.example.digital_aggregator_service.domain.dto.response.StaticSpecProd
 import com.fasterxml.jackson.core.JacksonException;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;
-import com.fasterxml.jackson.databind.JsonDeserializer;
-import com.fasterxml.jackson.databind.deser.std.StringDeserializer;
+import org.apache.kafka.common.serialization.StringDeserializer;
+import org.springframework.kafka.support.serializer.JsonDeserializer;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -25,17 +25,20 @@ public class KafkaConsumerConfig {
 
     @Bean
     public ConsumerFactory<String, DynamicSpecProducerResponseDto> dynamicSpecConsumerFactory() {
-        Map<String, Object> props = new HashMap<>();
-        props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092");
-        props.put(ConsumerConfig.GROUP_ID_CONFIG, "aggregator-group");
-        props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
-        props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, JsonDeserializer.class);
+        JsonDeserializer<DynamicSpecProducerResponseDto> deserializer =
+                new JsonDeserializer<>(DynamicSpecProducerResponseDto.class);
+        deserializer.addTrustedPackages("com.example.digital_aggregator_service.domain.dto.response");
 
-        props.put("spring.json.trusted.packages", "com.example.digital_aggregator_service.domain.dto.response");
-        props.put("spring.json.value.default.type",
-                "com.example.digital_aggregator_service.domain.dto.response.DynamicSpecProducerResponseDto");
-
-        return new DefaultKafkaConsumerFactory<>(props);
+        return new DefaultKafkaConsumerFactory<>(
+                Map.of(
+                        ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092",
+                        ConsumerConfig.GROUP_ID_CONFIG, "aggregator-group",
+                        ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class,
+                        ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, JsonDeserializer.class
+                ),
+                new StringDeserializer(),
+                deserializer
+        );
     }
 
     @Bean
@@ -46,20 +49,22 @@ public class KafkaConsumerConfig {
         return factory;
     }
 
-
     @Bean
     public ConsumerFactory<String, StaticSpecProducerResponseDto> staticSpecConsumerFactory() {
-        Map<String, Object> props = new HashMap<>();
-        props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092");
-        props.put(ConsumerConfig.GROUP_ID_CONFIG, "aggregator-group");
-        props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
-        props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, JsonDeserializer.class);
+        JsonDeserializer<StaticSpecProducerResponseDto> deserializer =
+                new JsonDeserializer<>(StaticSpecProducerResponseDto.class);
+        deserializer.addTrustedPackages("com.example.digital_aggregator_service.domain.dto.response");
 
-        props.put("spring.json.trusted.packages", "com.example.digital_aggregator_service.domain.dto.response");
-        props.put("spring.json.value.default.type",
-                "com.example.digital_aggregator_service.domain.dto.response.StaticSpecProducerResponseDto");
-
-        return new DefaultKafkaConsumerFactory<>(props);
+        return new DefaultKafkaConsumerFactory<>(
+                Map.of(
+                        ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092",
+                        ConsumerConfig.GROUP_ID_CONFIG, "aggregator-group",
+                        ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class,
+                        ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, JsonDeserializer.class
+                ),
+                new StringDeserializer(),
+                deserializer
+        );
     }
 
     @Bean
@@ -70,4 +75,5 @@ public class KafkaConsumerConfig {
         return factory;
     }
 }
+
 
