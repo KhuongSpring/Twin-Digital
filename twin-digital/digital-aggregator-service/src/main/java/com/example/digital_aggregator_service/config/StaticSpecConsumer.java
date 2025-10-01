@@ -13,7 +13,11 @@ import java.util.concurrent.ConcurrentHashMap;
 public class StaticSpecConsumer {
     private final ConcurrentHashMap<String, StaticSpecProducerResponseDto> cache = new ConcurrentHashMap<>();
 
-    @KafkaListener(topics = "static-spec-topic", groupId = "aggregator-group")
+    @KafkaListener(
+            topics = "static-spec-topic",
+            groupId = "aggregator-group",
+            containerFactory = "staticSpecKafkaListenerContainerFactory"
+    )
     public void listen(StaticSpecProducerResponseDto specs) {
         cache.put("latest", specs);
     }

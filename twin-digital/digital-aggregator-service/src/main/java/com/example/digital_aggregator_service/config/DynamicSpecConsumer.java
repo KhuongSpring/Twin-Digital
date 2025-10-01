@@ -12,7 +12,11 @@ import java.util.concurrent.ConcurrentHashMap;
 public class DynamicSpecConsumer {
     private final Map<String, DynamicSpecProducerResponseDto> cache = new ConcurrentHashMap<>();
 
-    @KafkaListener(topics = "dynamic-spec-topic", groupId = "aggregator-group")
+    @KafkaListener(
+            topics = "dynamic-spec-topic",
+            groupId = "aggregator-group",
+            containerFactory = "dynamicSpecKafkaListenerContainerFactory"
+    )
     public void listen(DynamicSpecProducerResponseDto specs) {
         cache.put("latest", specs);
     }
