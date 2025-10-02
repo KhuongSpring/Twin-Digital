@@ -64,7 +64,12 @@ public class DynamicSpecServiceImpl implements DynamicSpecService {
         }
         dynamicParameterRepository.saveAll(parameters);
 
-        return dynamicSpecMapper.toGroupDtoList(dynamicSpecGroupRepository.findAll());
+        List<DynamicSpecGroupResponseDto> responseDtos = dynamicSpecMapper.toGroupDtoList(dynamicSpecGroupRepository.findAll());
+        DynamicSpecProducerResponseDto result = new DynamicSpecProducerResponseDto(responseDtos);
+
+        kafkaTemplate.send("dynamic-spec-update-topic", result);
+
+        return responseDtos;
     }
 
     @Override
@@ -72,7 +77,7 @@ public class DynamicSpecServiceImpl implements DynamicSpecService {
         List<DynamicSpecGroupResponseDto> specs = dynamicSpecMapper.toGroupDtoList(dynamicSpecGroupRepository.findAll());
         DynamicSpecProducerResponseDto result = new DynamicSpecProducerResponseDto(specs);
 
-        kafkaTemplate.send("dynamic-spec-topic", result);
+        kafkaTemplate.send("dynamic-spec-snapshot-topic", result);
         return specs;
     }
 
