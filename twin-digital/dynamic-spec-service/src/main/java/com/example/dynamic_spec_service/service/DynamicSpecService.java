@@ -14,4 +14,6 @@ public interface DynamicSpecService {
         List<DynamicSpecGroupResponseDto> getSpec();
 
         void resetSpec(ResetDynamicSpecRequestDto idRequest);
+
+        List<DynamicSpecGroupResponseDto> initParameterData();
 }

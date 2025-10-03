@@ -4,25 +4,32 @@ import com.example.dynamic_spec_service.domain.dto.request.DynamicParameterEnter
 import com.example.dynamic_spec_service.domain.dto.request.ResetDynamicSpecRequestDto;
 import com.example.dynamic_spec_service.domain.dto.response.DynamicSpecGroupResponseDto;
 import com.example.dynamic_spec_service.domain.dto.response.DynamicSpecProducerResponseDto;
+import com.example.dynamic_spec_service.domain.dto.seed_data.SpecSeedDto;
 import com.example.dynamic_spec_service.domain.entity.DynamicParameter;
 import com.example.dynamic_spec_service.domain.entity.ValueType;
 import com.example.dynamic_spec_service.domain.mapper.DynamicSpecMapper;
 import com.example.dynamic_spec_service.repository.DynamicParameterRepository;
 import com.example.dynamic_spec_service.repository.DynamicSpecGroupRepository;
 import com.example.dynamic_spec_service.service.DynamicSpecService;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonSerializer;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ser.std.StringSerializer;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.springframework.context.annotation.Bean;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.data.domain.Sort;
 import org.springframework.kafka.core.DefaultKafkaProducerFactory;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.core.ProducerFactory;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.lang.reflect.Field;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -42,7 +49,7 @@ public class DynamicSpecServiceImpl implements DynamicSpecService {
     KafkaTemplate<String, DynamicSpecProducerResponseDto> kafkaTemplate;
 
     @Override
-    public List<DynamicSpecGroupResponseDto> enterSpec(DynamicParameterEnterRequestDto request) throws IllegalAccessException {
+    public List<DynamicSpecGroupResponseDto> enterSpec(DynamicParameterEnterRequestDto request) {
         List<Object> values = extractValues(request);
         List<DynamicParameter> parameters = dynamicParameterRepository.findAll(Sort.by("id").ascending());
 
@@ -64,7 +71,12 @@ public class DynamicSpecServiceImpl implements DynamicSpecService {
         }
         dynamicParameterRepository.saveAll(parameters);
 
-        return dynamicSpecMapper.toGroupDtoList(dynamicSpecGroupRepository.findAll());
+        List<DynamicSpecGroupResponseDto> responseDtos = dynamicSpecMapper.toGroupDtoList(dynamicSpecGroupRepository.findAll());
+        DynamicSpecProducerResponseDto result = new DynamicSpecProducerResponseDto(responseDtos);
+
+        kafkaTemplate.send("dynamic-spec-update-topic", result);
+
+        return responseDtos;
     }
 
     @Override
@@ -72,7 +84,7 @@ public class DynamicSpecServiceImpl implements DynamicSpecService {
         List<DynamicSpecGroupResponseDto> specs = dynamicSpecMapper.toGroupDtoList(dynamicSpecGroupRepository.findAll());
         DynamicSpecProducerResponseDto result = new DynamicSpecProducerResponseDto(specs);
 
-        kafkaTemplate.send("dynamic-spec-topic", result);
+        kafkaTemplate.send("dynamic-spec-snapshot-topic", result);
         return specs;
     }
 
@@ -88,7 +100,51 @@ public class DynamicSpecServiceImpl implements DynamicSpecService {
         }
     }
 
-    public List<Object> extractValues(DynamicParameterEnterRequestDto request) {
+    @Override
+    public List<DynamicSpecGroupResponseDto> initParameterData() {
+        try {
+            ObjectMapper mapper = new ObjectMapper();
+            InputStream inputStream =
+                    getClass().getResourceAsStream("/data/default-spec.json");
+
+            DynamicParameterEnterRequestDto seedData = mapper.readValue(
+                    inputStream,
+                    new TypeReference<DynamicParameterEnterRequestDto>() {
+                    }
+            );
+
+            List<DynamicParameter> parameters = dynamicParameterRepository.findAll(Sort.by("id").ascending());
+
+            for (DynamicParameter param : parameters) {
+                Object value = extractValueByName(seedData, param.getParamName());
+
+                if (value == null) continue;
+
+                if (value instanceof Number) {
+                    param.setNumericValue(((Number) value).doubleValue());
+                    param.setStringValue(null);
+                    param.setValueType(ValueType.NUMBER);
+                } else {
+                    param.setStringValue(value.toString());
+                    param.setNumericValue(null);
+                    param.setValueType(ValueType.STRING);
+                }
+            }
+
+            dynamicParameterRepository.saveAll(parameters);
+
+            List<DynamicSpecGroupResponseDto> responseDtos = dynamicSpecMapper.toGroupDtoList(dynamicSpecGroupRepository.findAll());
+            DynamicSpecProducerResponseDto result = new DynamicSpecProducerResponseDto(responseDtos);
+
+            kafkaTemplate.send("dynamic-spec-update-topic", result);
+
+            return responseDtos;
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to load parameter data", e);
+        }
+    }
+
+    private List<Object> extractValues(DynamicParameterEnterRequestDto request) {
         return Arrays.asList(
                 request.getSpeed(),
                 request.getRpm(),
@@ -141,6 +197,16 @@ public class DynamicSpecServiceImpl implements DynamicSpecService {
                 request.getMotorOverheat(),
                 request.getTireLeak()
         );
+    }
+
+    private Object extractValueByName(DynamicParameterEnterRequestDto seedData, String paramName) {
+        try {
+            Field field = DynamicParameterEnterRequestDto.class.getDeclaredField(paramName);
+            field.setAccessible(true);
+            return field.get(seedData);
+        } catch (NoSuchFieldException | IllegalAccessException e) {
+            return null;
+        }
     }
 
 

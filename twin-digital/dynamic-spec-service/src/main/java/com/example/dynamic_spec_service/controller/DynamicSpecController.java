@@ -55,5 +55,13 @@ public class DynamicSpecController {
         return VsResponseUtil.success(SuccessMessage.DynamicSpec.RESET_SPEC_SUCCESS);
     }
 
+    @Operation(
+            summary = "Thiết lập thông số xe",
+            description = "Dùng để thiết lập giá trị mặc định của thông số xe"
+    )
+    @PostMapping(UrlConstant.DynamicSpec.INIT_SPEC)
+    public ResponseEntity<?> initSpec() {
+        return VsResponseUtil.success(dynamicSpecService.initParameterData());
+    }
 
 }
