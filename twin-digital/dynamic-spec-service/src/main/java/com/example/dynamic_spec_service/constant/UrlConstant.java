@@ -42,9 +42,10 @@ public class UrlConstant {
 
   public static class DynamicSpec {
     private static final String PRE_FIX = "/dynamic-spec";
-    public static final String ENTER_SPEC = PRE_FIX + "/dynamic-spec";
+    public static final String ENTER_SPEC = PRE_FIX + "/enter-spec";
     public static final String SHOW_SPEC = PRE_FIX;
     public static final String RESET_SPEC = PRE_FIX + "/reset-spec";
+    public static final String INIT_SPEC = PRE_FIX + "/init-spec";
   }
 
 }
