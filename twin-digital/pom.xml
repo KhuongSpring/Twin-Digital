@@ -16,5 +16,6 @@
         <module>dynamic-spec-service</module>
         <module>static-spec-service</module>
         <module>digital-aggregator-service</module>
+        <module>continuous-data-service</module>
     </modules>
 </project>
