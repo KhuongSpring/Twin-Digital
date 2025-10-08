@@ -19,6 +19,7 @@
           <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/1.18.40/lombok-1.18.40.jar" />
         </processorPath>
         <module name="digital-aggregator-service" />
+        <module name="continuous-data-service" />
         <module name="car-service" />
       </profile>
       <profile name="Annotation profile for dynamic-spec-service" enabled="true">
@@ -45,19 +46,7 @@
         </processorPath>
         <module name="static-spec-service" />
       </profile>
-      <profile name="Annotation profile for continuous-data-service" enabled="true">
-        <sourceOutputDir name="target/generated-sources/annotations" />
-        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
-        <outputRelativeToContentRoot value="true" />
-        <processorPath useClasspath="false">
-          <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/1.18.40/lombok-1.18.40.jar" />
-        </processorPath>
-        <module name="continuous-data-service" />
-      </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel>
-      <module name="continuous-data-service" target="21" />
-    </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
