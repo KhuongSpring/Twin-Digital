@@ -12,6 +12,7 @@ import org.example.staticspecservice.domain.dto.response.StaticSpecGroupResponse
 import org.example.staticspecservice.domain.dto.response.StaticSpecProducerResponseDto;
 import org.example.staticspecservice.domain.entity.StaticSpecGroup;
 import org.example.staticspecservice.domain.entity.StaticSpecParameter;
+import org.example.staticspecservice.domain.mapper.StaticSpecMapper;
 import org.example.staticspecservice.repository.StaticSpecGroupRepository;
 import org.example.staticspecservice.repository.StaticSpecParameterRepository;
 import org.example.staticspecservice.service.StaticSpecService;
@@ -38,6 +39,8 @@ public class StaticSpecServiceImpl implements StaticSpecService {
     CarSpecFileReader carSpecFileReader;
 
     KafkaTemplate<String, StaticSpecProducerResponseDto> kafkaTemplate;
+
+    StaticSpecMapper staticSpecMapper;
 
     private static final Map<String, String> FIELD_TO_GROUP_MAP = new HashMap<>();
 
@@ -68,6 +71,10 @@ public class StaticSpecServiceImpl implements StaticSpecService {
                 updateParameterValue(existingParameter, value);
                 parametersToUpdate.add(existingParameter);
             }
+            List<StaticSpecGroupResponseDto> responseDtos = staticSpecMapper.toGroupDtoList(groupRepository.findAll());
+            StaticSpecProducerResponseDto result = new StaticSpecProducerResponseDto(responseDtos);
+
+            kafkaTemplate.send("static-spec-update-topic", result);
 
             parameterRepository.saveAll(parametersToUpdate);
         } catch (Exception e) {
@@ -107,7 +114,7 @@ public class StaticSpecServiceImpl implements StaticSpecService {
                     .toList();
 
             StaticSpecProducerResponseDto producerResponse = new StaticSpecProducerResponseDto(responseDto);
-            kafkaTemplate.send("static-spec-topic", producerResponse);
+            kafkaTemplate.send("static-spec-snapshot-topic", producerResponse);
             return responseDto;
 
         } catch (Exception e) {
