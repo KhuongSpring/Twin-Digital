@@ -55,6 +55,9 @@
         <module name="continuous-data-service" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="continuous-data-service" target="21" />
+    </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
