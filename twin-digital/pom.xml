@@ -17,5 +17,6 @@
         <module>static-spec-service</module>
         <module>digital-aggregator-service</module>
         <module>continuous-data-service</module>
+        <module>car-service</module>
     </modules>
 </project>

@@ -27,7 +27,7 @@ public class AggregatorServiceImpl implements AggregatorService {
     public AggregatorSpecResponseDto getSpec(String modelName) {
         DynamicSpecProducerResponseDto dynamicSpecs = dynamicSpecConsumer.getLatestSnapshot();
 
-        StaticSpecProducerResponseDto staticSpecs = staticSpecConsumer.getByModel(modelName);
+        StaticSpecProducerResponseDto staticSpecs = staticSpecConsumer.getLatestSnapshot();
 
         System.out.println(dynamicSpecs.getSpecs().size());
 
