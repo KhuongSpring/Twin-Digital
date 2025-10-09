@@ -19,8 +19,8 @@
           <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/1.18.40/lombok-1.18.40.jar" />
         </processorPath>
         <module name="digital-aggregator-service" />
-        <module name="continuous-data-service" />
         <module name="car-service" />
+        <module name="continuous-data-service" />
       </profile>
       <profile name="Annotation profile for dynamic-spec-service" enabled="true">
         <sourceOutputDir name="target/generated-sources/annotations" />
