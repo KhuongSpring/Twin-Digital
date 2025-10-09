@@ -182,6 +182,10 @@ services:
 #        condition: service_started
       api-gateway:
         condition: service_started
+      dynamic-spec-service:
+        condition: service_started
+      static-spec-service:
+        condition: service_started
     ports:
       - "8084:8084"
     environment:
