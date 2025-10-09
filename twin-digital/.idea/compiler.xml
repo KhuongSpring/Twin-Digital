@@ -19,6 +19,7 @@
           <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/1.18.40/lombok-1.18.40.jar" />
         </processorPath>
         <module name="digital-aggregator-service" />
+        <module name="continuous-data-service" />
         <module name="car-service" />
       </profile>
       <profile name="Annotation profile for dynamic-spec-service" enabled="true">
@@ -52,6 +53,7 @@
       <module name="api-gateway" options="-parameters" />
       <module name="car-service" options="-parameters" />
       <module name="config-server" options="-parameters" />
+      <module name="continuous-data-service" options="-parameters" />
       <module name="digital-aggregator-service" options="-parameters" />
       <module name="discovery-server" options="-parameters" />
       <module name="dynamic-spec-service" options="-parameters" />
