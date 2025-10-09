@@ -45,16 +45,14 @@ services:
     restart: always
     ports:
       - "8888:8888"
-    environment:
-      SPRING_PROFILES_ACTIVE: docker
     networks:
       - app-net
     healthcheck:
-      test: ["CMD", "wget", "--spider", "-q", "http://localhost:8888/actuator/health"]
+      test: ["CMD-SHELL", "curl -f http://localhost:8888/actuator/health || exit 1"]
       interval: 20s
       timeout: 10s
       retries: 5
-      start_period: 30s
+      start_period: 60s
 
   # --- Eureka Discovery Server ---
   discovery-server:
@@ -81,13 +79,11 @@ services:
     restart: always
     ports:
       - "8080:8080"
-#    depends_on:
-#      discovery-server:
-#        condition: service_healthy
+    depends_on:
+      discovery-server:
+        condition: service_healthy
     environment:
       SPRING_PROFILES_ACTIVE: docker
-      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://discovery-server:8761/eureka/
-      SPRING_CONFIG_IMPORT: optional:configserver:http://config-server:8888/
     networks:
       - app-net
 
@@ -97,22 +93,20 @@ services:
     container_name: dynamic-spec-service
     restart: always
     depends_on:
+      discovery-server:
+        condition: service_healthy
       config-server:
         condition: service_healthy
+      api-gateway:
+        condition: service_started
       mysql:
         condition: service_started
       kafka:
-        condition: service_started
-#      discovery-server:
-#        condition: service_started
-      api-gateway:
         condition: service_started
     ports:
       - "8081:8081"
     environment:
       SPRING_PROFILES_ACTIVE: docker
-      SPRING_CONFIG_IMPORT: optional:configserver:http://config-server:8888/
-      SPRING_CLOUD_CONFIG_URI: http://config-server:8888
     networks:
       - app-net
 
@@ -122,22 +116,20 @@ services:
     container_name: static-spec-service
     restart: always
     depends_on:
+      discovery-server:
+        condition: service_healthy
       config-server:
         condition: service_healthy
+      api-gateway:
+        condition: service_started
       mysql:
         condition: service_started
       kafka:
-        condition: service_started
-#      discovery-server:
-#        condition: service_started
-      api-gateway:
         condition: service_started
     ports:
       - "8082:8082"
     environment:
       SPRING_PROFILES_ACTIVE: docker
-      SPRING_CONFIG_IMPORT: optional:configserver:http://config-server:8888/
-      SPRING_CLOUD_CONFIG_URI: http://config-server:8888
     networks:
       - app-net
 
@@ -147,22 +139,20 @@ services:
     container_name: digital-aggregator-service
     restart: always
     depends_on:
+      discovery-server:
+        condition: service_healthy
       config-server:
         condition: service_healthy
+      api-gateway:
+        condition: service_started
       mysql:
         condition: service_started
       kafka:
-        condition: service_started
-#      discovery-server:
-#        condition: service_started
-      api-gateway:
         condition: service_started
     ports:
       - "8083:8083"
     environment:
       SPRING_PROFILES_ACTIVE: docker
-      SPRING_CONFIG_IMPORT: optional:configserver:http://config-server:8888/
-      SPRING_CLOUD_CONFIG_URI: http://config-server:8888
     networks:
       - app-net
 
@@ -172,15 +162,15 @@ services:
     container_name: car-service
     restart: always
     depends_on:
+      discovery-server:
+        condition: service_healthy
       config-server:
         condition: service_healthy
+      api-gateway:
+        condition: service_started
       mysql:
         condition: service_started
       kafka:
-        condition: service_started
-#      discovery-server:
-#        condition: service_started
-      api-gateway:
         condition: service_started
       dynamic-spec-service:
         condition: service_started
@@ -190,8 +180,6 @@ services:
       - "8084:8084"
     environment:
       SPRING_PROFILES_ACTIVE: docker
-      SPRING_CONFIG_IMPORT: optional:configserver:http://config-server:8888/
-      SPRING_CLOUD_CONFIG_URI: http://config-server:8888
     networks:
       - app-net
 
@@ -201,22 +189,20 @@ services:
     container_name: continuous-data-service
     restart: always
     depends_on:
+      discovery-server:
+        condition: service_healthy
       config-server:
         condition: service_healthy
+      api-gateway:
+        condition: service_started
       mysql:
         condition: service_started
       kafka:
-        condition: service_started
-#      discovery-server:
-#        condition: service_started
-      api-gateway:
         condition: service_started
     ports:
       - "8085:8085"
     environment:
       SPRING_PROFILES_ACTIVE: docker
-      SPRING_CONFIG_IMPORT: optional:configserver:http://config-server:8888/
-      SPRING_CLOUD_CONFIG_URI: http://config-server:8888
     networks:
       - app-net
 
