@@ -1,0 +1,224 @@
+version: '3.9'
+
+services:
+  # ===== MYSQL =====
+  mysql:
+    image: mysql:8.0
+    container_name: mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: khuong123
+      MYSQL_DATABASE: twin-digital
+    ports:
+      - "3307:3306"
+    networks:
+      - app-net
+
+  # ===== KAFKA (KRaft mode, no Zookeeper) =====
+  kafka:
+    image: confluentinc/cp-kafka:7.6.0
+    container_name: kafka
+    restart: always
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
+      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
+      KAFKA_PROCESS_ROLES: broker,controller
+      KAFKA_CONTROLLER_LISTENER_NAMES: CONTROLLER
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092
+      KAFKA_LISTENERS: PLAINTEXT://:9092,CONTROLLER://:9093
+      KAFKA_CONTROLLER_QUORUM_VOTERS: 1@kafka:9093
+      KAFKA_LOG_DIRS: /tmp/kraft-combined-logs
+      CLUSTER_ID: MkcwN0NjQjFDMjE4QkYyQj
+      ALLOW_PLAINTEXT_LISTENER: yes
+    ports:
+      - "9092:9092"
+    networks:
+      - app-net
+
+  # ===== CONFIG SERVER =====
+  config-server:
+    build: ./config-server
+    container_name: config-server
+    restart: always
+    ports:
+      - "8888:8888"
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+    networks:
+      - app-net
+    healthcheck:
+      test: ["CMD", "wget", "--spider", "-q", "http://localhost:8888/actuator/health"]
+      interval: 20s
+      timeout: 10s
+      retries: 5
+      start_period: 30s
+
+  # --- Eureka Discovery Server ---
+  discovery-server:
+    build: ./discovery-server
+    container_name: discovery-server
+    restart: always
+    ports:
+      - "8761:8761"
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+    networks:
+      - app-net
+    healthcheck:
+      test: ["CMD", "wget", "--spider", "-q", "http://localhost:8761/actuator/health"]
+      interval: 20s
+      timeout: 10s
+      retries: 5
+      start_period: 30s
+
+  # --- API Gateway ---
+  api-gateway:
+    build: ./api-gateway
+    container_name: api-gateway
+    restart: always
+    ports:
+      - "8080:8080"
+    depends_on:
+      discovery-server:
+        condition: service_healthy
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://discovery-server:8761/eureka/
+      SPRING_CONFIG_IMPORT: optional:configserver:http://config-server:8888/
+    networks:
+      - app-net
+
+  # ===== DYNAMIC SPEC SERVICE =====
+  dynamic-spec-service:
+    build: ./dynamic-spec-service
+    container_name: dynamic-spec-service
+    restart: always
+    depends_on:
+      config-server:
+        condition: service_healthy
+      mysql:
+        condition: service_started
+      kafka:
+        condition: service_started
+      discovery-server:
+        condition: service_started
+      api-gateway:
+        condition: service_started
+    ports:
+      - "8081:8081"
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+      SPRING_CONFIG_IMPORT: optional:configserver:http://config-server:8888/
+      SPRING_CLOUD_CONFIG_URI: http://config-server:8888
+    networks:
+      - app-net
+
+  # ===== STATIC SPEC SERVICE =====
+  static-spec-service:
+    build: ./static-spec-service
+    container_name: static-spec-service
+    restart: always
+    depends_on:
+      config-server:
+        condition: service_healthy
+      mysql:
+        condition: service_started
+      kafka:
+        condition: service_started
+      discovery-server:
+        condition: service_started
+      api-gateway:
+        condition: service_started
+    ports:
+      - "8082:8082"
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+      SPRING_CONFIG_IMPORT: optional:configserver:http://config-server:8888/
+      SPRING_CLOUD_CONFIG_URI: http://config-server:8888
+    networks:
+      - app-net
+
+  # ===== DIGITAL AGGREGATOR SERVICE =====
+  digital-aggregator-service:
+    build: ./digital-aggregator-service
+    container_name: digital-aggregator-service
+    restart: always
+    depends_on:
+      config-server:
+        condition: service_healthy
+      mysql:
+        condition: service_started
+      kafka:
+        condition: service_started
+      discovery-server:
+        condition: service_started
+      api-gateway:
+        condition: service_started
+    ports:
+      - "8083:8083"
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+      SPRING_CONFIG_IMPORT: optional:configserver:http://config-server:8888/
+      SPRING_CLOUD_CONFIG_URI: http://config-server:8888
+    networks:
+      - app-net
+
+  # ===== CAR SERVICE =====
+  car-service:
+    build: ./car-service
+    container_name: car-service
+    restart: always
+    depends_on:
+      config-server:
+        condition: service_healthy
+      mysql:
+        condition: service_started
+      kafka:
+        condition: service_started
+      discovery-server:
+        condition: service_started
+      api-gateway:
+        condition: service_started
+    ports:
+      - "8084:8084"
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+      SPRING_CONFIG_IMPORT: optional:configserver:http://config-server:8888/
+      SPRING_CLOUD_CONFIG_URI: http://config-server:8888
+    networks:
+      - app-net
+
+  # ===== CONTINUOUS DATA SERVICE =====
+  continuous-data-service:
+    build: ./continuous-data-service
+    container_name: continuous-data-service
+    restart: always
+    depends_on:
+      config-server:
+        condition: service_healthy
+      mysql:
+        condition: service_started
+      kafka:
+        condition: service_started
+      discovery-server:
+        condition: service_started
+      api-gateway:
+        condition: service_started
+    ports:
+      - "8085:8085"
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+      SPRING_CONFIG_IMPORT: optional:configserver:http://config-server:8888/
+      SPRING_CLOUD_CONFIG_URI: http://config-server:8888
+    networks:
+      - app-net
+
+networks:
+  app-net:
+    driver: bridge
+
+volumes:
+  kafka_data:
