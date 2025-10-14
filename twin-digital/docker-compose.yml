@@ -168,6 +168,7 @@ services:
       SPRING_PROFILES_ACTIVE: docker
       SPRING_APPLICATION_NAME: digital-aggregator-service
       SPRING_CONFIG_IMPORT: configserver:http://config-server:8888
+      SPRING_KAFKA_BOOTSTRAP_SERVERS: kafka:9092
     networks:
       - app-net
 
