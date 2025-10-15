@@ -3,6 +3,7 @@ package com.example.continuous_data_service.config;
 import com.example.continuous_data_service.domain.dto.response.DynamicSpecProducerResponseDto;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.common.serialization.StringDeserializer;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.kafka.annotation.EnableKafka;
@@ -17,6 +18,12 @@ import java.util.Map;
 @EnableKafka
 public class KafkaConfig {
 
+    @Value("${spring.kafka.bootstrap-servers}")
+    private String kafkaBoostrapServers;
+
+    @Value("${spring.kafka.consumer.group-id}")
+    private String groupId;
+
     @Bean
     public ConsumerFactory<String, DynamicSpecProducerResponseDto> dynamicSpecConsumerFactory() {
         JsonDeserializer<DynamicSpecProducerResponseDto> deserializer =
@@ -25,8 +32,8 @@ public class KafkaConfig {
 
         return new DefaultKafkaConsumerFactory<>(
                 Map.of(
-                        ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092",
-                        ConsumerConfig.GROUP_ID_CONFIG, "aggregator-group",
+                        ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, kafkaBoostrapServers,
+                        ConsumerConfig.GROUP_ID_CONFIG, groupId,
                         ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class,
                         ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, JsonDeserializer.class
                 ),

@@ -42,6 +42,7 @@ services:
       - "9092:9092"
     networks:
       - app-net
+  
 
   # ===== CONFIG SERVER =====
   config-server:
@@ -53,7 +54,7 @@ services:
     networks:
       - app-net
     healthcheck:
-      test: ["CMD-SHELL", "curl -f http://localhost:8888/actuator/health || exit 1"]
+      test: [ "CMD-SHELL", "curl -f http://localhost:8888/actuator/health || exit 1" ]
       interval: 20s
       timeout: 10s
       retries: 5
@@ -219,6 +220,7 @@ services:
       SPRING_PROFILES_ACTIVE: docker
       SPRING_APPLICATION_NAME: continuous-data-service
       SPRING_CONFIG_IMPORT: configserver:http://config-server:8888
+      SPRING_KAFKA_BOOTSTRAP_SERVERS: kafka:9092
     networks:
       - app-net
 
