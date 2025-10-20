@@ -53,12 +53,12 @@
   {
     "groupName": "Location & Connectivity",
     "parameters": [
-      { "paramName": "gps.latitude", "valueType": "NUMBER" },
-      { "paramName": "gps.longitude", "valueType": "NUMBER" },
-      { "paramName": "gps.speed", "valueType": "NUMBER" },
+      { "paramName": "gps_latitude", "valueType": "NUMBER" },
+      { "paramName": "gps_longitude", "valueType": "NUMBER" },
+      { "paramName": "gps_speed", "valueType": "NUMBER" },
       { "paramName": "signalStrength", "valueType": "NUMBER" },
-      { "paramName": "gps.altitude", "valueType": "NUMBER" },
-      { "paramName": "gps.heading", "valueType": "NUMBER" },
+      { "paramName": "gps_altitude", "valueType": "NUMBER" },
+      { "paramName": "gps_heading", "valueType": "NUMBER" },
       { "paramName": "networkStatus", "valueType": "STRING" },
       { "paramName": "otaStatus", "valueType": "STRING" }
     ]
@@ -66,11 +66,11 @@
   {
     "groupName": "Cabin & Comfort",
     "parameters": [
-      { "paramName": "doorStatus.front_left", "valueType": "STRING" },
-      { "paramName": "doorStatus.front_right", "valueType": "STRING" },
-      { "paramName": "doorStatus.rear_left", "valueType": "STRING" },
-      { "paramName": "doorStatus.rear_right", "valueType": "STRING" },
-      { "paramName": "doorStatus.trunk", "valueType": "STRING" },
+      { "paramName": "doorStatus_front_left", "valueType": "STRING" },
+      { "paramName": "doorStatus_front_right", "valueType": "STRING" },
+      { "paramName": "doorStatus_rear_left", "valueType": "STRING" },
+      { "paramName": "doorStatus_rear_right", "valueType": "STRING" },
+      { "paramName": "doorStatus_trunk", "valueType": "STRING" },
       { "paramName": "lockStatus", "valueType": "STRING" },
       { "paramName": "acStatus", "valueType": "STRING" },
       { "paramName": "cabinTemperature", "valueType": "NUMBER" },

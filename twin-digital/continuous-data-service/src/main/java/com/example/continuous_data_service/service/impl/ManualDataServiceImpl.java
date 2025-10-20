@@ -43,7 +43,7 @@ public class ManualDataServiceImpl implements ManualDataService {
             });
         }
 
-        updateManualDataToDynamicSpecService(request);
+//        updateManualDataToDynamicSpecService(request);
     }
 
     private void updateManualDataToDynamicSpecService(ManualDataUpdateRequestDto request) {
@@ -98,15 +98,18 @@ public class ManualDataServiceImpl implements ManualDataService {
                     if (!dynamicParameterStore.get("speed").getValue().equals(0))
                         throw new VsException(ErrorMessage.ManualData.ERR_IS_CAR_RUNNING);
                 }
+                break;
             }
             case "oilPressure": {
                 if (dynamicParameterStore.get("speed").getValue().equals(0)
                         && dynamicParameterStore.get("driveMode").getValue().equals("PARK"))
                     throw new VsException(ErrorMessage.ManualData.ERR_IS_CAR_OFF);
+                break;
             }
             case "airbagStatus": {
                 if (!dynamicParameterStore.get("speed").getValue().equals(0))
                     throw new VsException(ErrorMessage.ManualData.ERR_IS_CAR_RUNNING);
+                break;
             }
             case "otaStatus": {
                 if (!dynamicParameterStore.get("driveMode").getValue().equals("PARK"))
@@ -114,6 +117,7 @@ public class ManualDataServiceImpl implements ManualDataService {
 
                 if (!dynamicParameterStore.get("speed").getValue().equals(0))
                     throw new VsException(ErrorMessage.ManualData.ERR_IS_CAR_RUNNING);
+                break;
 
             }
             case "doorStatus_front_left": {
@@ -130,6 +134,7 @@ public class ManualDataServiceImpl implements ManualDataService {
                     if (dynamicParameterStore.get("driveMode").getValue().equals("REVERSE"))
                         throw new VsException(ErrorMessage.ManualData.ERR_IS_MODE_REVERSE);
                 }
+                break;
             }
             case "doorStatus_front_right": {
                 if (value.equals("Opened")) {
@@ -145,6 +150,7 @@ public class ManualDataServiceImpl implements ManualDataService {
                     if (dynamicParameterStore.get("driveMode").getValue().equals("REVERSE"))
                         throw new VsException(ErrorMessage.ManualData.ERR_IS_MODE_REVERSE);
                 }
+                break;
             }
             case "doorStatus_rear_left": {
                 if (value.equals("Opened")) {
@@ -160,6 +166,7 @@ public class ManualDataServiceImpl implements ManualDataService {
                     if (dynamicParameterStore.get("driveMode").getValue().equals("REVERSE"))
                         throw new VsException(ErrorMessage.ManualData.ERR_IS_MODE_REVERSE);
                 }
+                break;
             }
             case "doorStatus_rear_right": {
                 if (value.equals("Opened")) {
@@ -175,6 +182,7 @@ public class ManualDataServiceImpl implements ManualDataService {
                     if (dynamicParameterStore.get("driveMode").getValue().equals("REVERSE"))
                         throw new VsException(ErrorMessage.ManualData.ERR_IS_MODE_REVERSE);
                 }
+                break;
             }
             case "doorStatus_trunk": {
                 if (value.equals("Opened")) {
@@ -184,6 +192,7 @@ public class ManualDataServiceImpl implements ManualDataService {
                     if (!dynamicParameterStore.get("driveMode").getValue().equals("PARK"))
                         throw new VsException(ErrorMessage.ManualData.ERR_IS_NOT_PARK);
                 }
+                break;
             }
             case "lockStatus": {
                 if (value.equals("Locked")) {
@@ -198,14 +207,14 @@ public class ManualDataServiceImpl implements ManualDataService {
                     if (!dynamicParameterStore.get("speed").getValue().equals(0))
                         throw new VsException(ErrorMessage.ManualData.ERR_IS_CAR_RUNNING);
                 }
-
+                break;
             }
             case "acStatus": {
                 if (value.equals("On")) {
                     if ((Double) dynamicParameterStore.get("batteryLevel").getValue() < 5)
                         throw new VsException(ErrorMessage.ManualData.ERR_IS_CAR_OFF);
                 }
-
+                break;
                 // If acStatus = On -> check 16 < cabinTemperature < 30 and door = true too long
             }
             case "cabinTemperature": {
@@ -217,6 +226,7 @@ public class ManualDataServiceImpl implements ManualDataService {
 
                 if ((Double) value > 30)
                     throw new VsException(ErrorMessage.ManualData.ERR_IS_TEMPERATURE_TOO_HIGH);
+                break;
             }
             case "seatHeating": {
                 if (value.equals("On")){
@@ -226,14 +236,14 @@ public class ManualDataServiceImpl implements ManualDataService {
                     if ((Double) dynamicParameterStore.get("batteryLevel").getValue() < 10)
                         throw new VsException(ErrorMessage.ManualData.ERR_IS_BATTERY_LOW);
                 }
-
+                break;
                 // Tự động tắt nếu batteryLevel < 5% hoặc speed = 0 quá lâu
             }
             case "headlightStatus": {
-
+                break;
             }
             case "checkEngine": {
-
+                break;
             }
             default:
                 throw new VsException(ErrorMessage.ManualData.ERR_IS_REALTIME_DATA);

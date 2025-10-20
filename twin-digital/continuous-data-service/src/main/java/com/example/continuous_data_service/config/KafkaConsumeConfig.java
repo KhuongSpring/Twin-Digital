@@ -47,5 +47,9 @@ public class KafkaConsumeConfig {
 
         System.out.println("[Continuous-Service] Stored "
                 + paramMap.size() + " dynamic parameters from aggregator");
+
+        dynamicParameterStore.getAll().forEach((key, value) -> {
+            System.out.println(key + " " + value);
+        });
     }
 }
