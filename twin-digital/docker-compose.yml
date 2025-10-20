@@ -175,7 +175,7 @@ services:
 
   # ===== CAR SERVICE =====
   car-service:
-    build: ./car-service
+    build: user-service
     container_name: car-service
     restart: always
     depends_on:
