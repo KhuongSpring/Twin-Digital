@@ -18,7 +18,7 @@ public class DynamicParameterEnterRequestDto {
     @Schema(description = "Vòng tua máy (RPM)", example = "null")
     Double rpm;
 
-        @Schema(description = "Số đang gài (Park, Reverse, Neutral, Drive)", example = "null")
+    @Schema(description = "Số đang gài (P, R, N, D)", example = "null")
     String gear;
 
     @Schema(description = "Số km đã đi (km)", example = "null")

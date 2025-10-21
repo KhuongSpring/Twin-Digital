@@ -11,7 +11,7 @@ import java.util.Map;
 @Setter
 @Getter
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class ManualDataUpdateRequestDto {
+public class UserControlledDataUpdateRequestDto {
 
     List<Map<String, Object>> data;
 
