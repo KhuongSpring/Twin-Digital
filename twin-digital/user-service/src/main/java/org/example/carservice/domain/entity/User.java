@@ -28,4 +28,6 @@ public class User {
 
   @Column(nullable = false, updatable = false, unique = true)
   String username;
+
+  String carModelName;
 }

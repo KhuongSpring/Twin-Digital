@@ -2,12 +2,12 @@
 <project version="4">
   <component name="Encoding">
     <file url="file://$PROJECT_DIR$/api-gateway/src/main/java" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/car-service/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/config-server/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/continuous-data-service/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/digital-aggregator-service/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/discovery-server/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/dynamic-spec-service/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/static-spec-service/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/user-service/src/main/java" charset="UTF-8" />
   </component>
 </project>

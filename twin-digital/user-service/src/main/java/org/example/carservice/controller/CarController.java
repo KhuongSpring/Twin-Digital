@@ -16,6 +16,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
 @RestApiV1
 @Validated
@@ -24,12 +26,25 @@ import org.springframework.web.bind.annotation.RequestBody;
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class CarController {
 
-  CarService carService;
+    CarService carService;
 
-  @Operation(summary = "Đưa xe vào hệ thống", description = "API để đưa xe điện vào hệ thống Digital Twin, bao gồm việc import thông số tĩnh và khởi tạo thông số động")
-  @PostMapping(value = UrlConstant.Car.ENTER_CAR)
-  public ResponseEntity<?> enterCar(@Valid @RequestBody EnterCarRequestDto request) {
-    EnterCarResponseDto response = carService.enterCar(request);
-    return VsResponseUtil.success(response);
-  }
+    @Operation(
+            summary = "Đưa xe vào hệ thống",
+            description = "API để đưa xe điện vào hệ thống Digital Twin, bao gồm việc import thông số tĩnh và khởi tạo thông số động"
+    )
+    @PostMapping(value = UrlConstant.Car.ENTER_CAR)
+    public ResponseEntity<?> enterCar(@Valid @RequestBody EnterCarRequestDto request) {
+        EnterCarResponseDto response = carService.enterCar(request);
+        return VsResponseUtil.success(response);
+    }
+
+    @Operation(
+            summary = "Lấy thông tin xe theo User ID",
+            description = "API để lấy thông tin xe và các thông số tĩnh/động theo User ID"
+    )
+    @GetMapping(value = UrlConstant.Car.GET_CAR_BY_USER_ID)
+    public ResponseEntity<?> getCarByUserId(@PathVariable String userId) {
+        EnterCarResponseDto response = carService.getCarByUserId(userId);
+        return VsResponseUtil.success(response);
+    }
 }

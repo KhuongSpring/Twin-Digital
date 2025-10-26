@@ -27,6 +27,8 @@ public class ErrorMessage {
     public static final String ERR_DYNAMIC_SPEC_SERVICE_UNAVAILABLE = "exception.car.dynamic.spec.service.unavailable";
     public static final String ERR_ENTER_CAR_FAILED = "exception.car.enter.failed";
     public static final String ERR_ROLLBACK_FAILED = "exception.car.rollback.failed";
+    public static final String ERR_USER_HAS_NO_CAR = "exception.car.user.has.no.car";
+    public static final String ERR_GET_CAR_FAILED = "exception.car.get.failed";
 
     private Car() {
     }

@@ -13,7 +13,6 @@ import org.example.carservice.domain.dto.response.DynamicSpecGroupResponseDto;
 import org.example.carservice.domain.dto.response.EnterCarResponseDto;
 import org.example.carservice.domain.dto.response.StaticSpecGroupResponseDto;
 import org.example.carservice.domain.entity.User;
-import org.example.carservice.exception.InternalServerException;
 import org.example.carservice.exception.ServiceUnavailableException;
 import org.example.carservice.exception.VsException;
 import org.example.carservice.repository.UserRepository;
@@ -50,26 +49,116 @@ public class CarServiceImpl implements CarService {
         List<DynamicSpecGroupResponseDto> dynamicSpecGroups;
 
             try {
-                staticSpecGroups = importCarSpecification(request.getCarModelName());
-                log.info("Static specification imported successfully");
+                String carModelName = request.getCarModelName();
+                
+                staticSpecGroups = importCarSpecification(carModelName);
 
                 dynamicSpecGroups = initDynamicSpec();
 
-                EnterCarResponseDto response = EnterCarResponseDto.builder()
-                        .carModelName(request.getCarModelName())
+                user.setCarModelName(carModelName);
+                userRepository.save(user);
+                log.info("Car model name saved to database: {}", carModelName);
+
+                return EnterCarResponseDto.builder()
+                        .carModelName(carModelName)
                         .userId(user.getId())
                         .staticSpecGroups(staticSpecGroups)
                         .dynamicSpecGroups(dynamicSpecGroups)
                         .message(SuccessMessage.Car.ENTER_CAR_SUCCESS)
                         .build();
 
-                log.info("Car entered successfully: {}", request.getCarModelName());
-                return response;
-
             } catch (Exception e) {
                 log.error("Error during enterCar process", e);
                 throw new VsException(ErrorMessage.Car.ERR_ENTER_CAR_FAILED + ": " + e.getMessage());
             }
+    }
+
+    @Override
+    public EnterCarResponseDto getCarByUserId(String userId) {
+        User user = userRepository.findById(userId)
+              .orElseThrow(() -> new VsException(ErrorMessage.User.ERR_USER_NOT_FOUND));
+
+        if (user.getCarModelName() == null || user.getCarModelName().isEmpty()) {
+            throw new VsException(ErrorMessage.Car.ERR_USER_HAS_NO_CAR);
+        }
+
+        try {
+            List<StaticSpecGroupResponseDto> staticSpecGroups = getStaticSpec();
+
+            List<DynamicSpecGroupResponseDto> dynamicSpecGroups = getDynamicSpec();
+
+            return EnterCarResponseDto.builder()
+                    .carModelName(user.getCarModelName())
+                    .userId(user.getId())
+                    .staticSpecGroups(staticSpecGroups)
+                    .dynamicSpecGroups(dynamicSpecGroups)
+                    .message("Get car information successfully")
+                    .build();
+
+        } catch (Exception e) {
+            throw new VsException(ErrorMessage.Car.ERR_GET_CAR_FAILED + ": " + e.getMessage());
+        }
+    }
+
+    private List<StaticSpecGroupResponseDto> getStaticSpec() {
+        try {
+            WebClient webClient = webClientBuilder
+                    .baseUrl(staticSpecServiceConfig.getUrl())
+                    .build();
+
+            Map<String, Object> response = webClient.get()
+                    .uri("/static-spec")
+                    .retrieve()
+                    .bodyToMono(new ParameterizedTypeReference<Map<String, Object>>() {
+                    })
+                    .block();
+
+            if (response != null && response.containsKey("data")) {
+                Object data = response.get("data");
+                if (data instanceof List<?> rawList) {
+                    return rawList.stream()
+                          .map(this::convertToStaticSpecGroup)
+                          .toList();
+                }
+            }
+
+            throw new VsException("Invalid response from Static Spec Service");
+
+        } catch (Exception e) {
+            log.error("Error calling Static Spec Service", e);
+            throw new ServiceUnavailableException(ErrorMessage.Car.ERR_STATIC_SPEC_SERVICE_UNAVAILABLE);
+        }
+    }
+
+    private List<DynamicSpecGroupResponseDto> getDynamicSpec() {
+        try {
+            WebClient webClient = webClientBuilder
+                    .baseUrl(dynamicSpecServiceConfig.getUrl())
+                    .build();
+
+            Map<String, Object> response = webClient.get()
+                    .uri("/dynamic-spec")
+                    .retrieve()
+                    .bodyToMono(new ParameterizedTypeReference<Map<String, Object>>() {
+                    })
+                    .block();
+
+            if (response != null && response.containsKey("data")) {
+                Object data = response.get("data");
+                if (data instanceof List<?>) {
+                    List<?> rawList = (List<?>) data;
+                    return rawList.stream()
+                            .map(this::convertToDynamicSpecGroup)
+                            .toList();
+                }
+            }
+
+            throw new VsException("Invalid response from Dynamic Spec Service");
+
+        } catch (Exception e) {
+            log.error("Error calling Dynamic Spec Service", e);
+            throw new ServiceUnavailableException(ErrorMessage.Car.ERR_DYNAMIC_SPEC_SERVICE_UNAVAILABLE);
+        }
     }
 
     private List<StaticSpecGroupResponseDto> importCarSpecification(String carModelName) {

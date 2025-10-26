@@ -11,17 +11,6 @@
         <module name="config-server" />
         <module name="discovery-server" />
       </profile>
-      <profile name="Annotation profile for twin-digital" enabled="true">
-        <sourceOutputDir name="target/generated-sources/annotations" />
-        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
-        <outputRelativeToContentRoot value="true" />
-        <processorPath useClasspath="false">
-          <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/1.18.40/lombok-1.18.40.jar" />
-        </processorPath>
-        <module name="digital-aggregator-service" />
-        <module name="car-service" />
-        <module name="continuous-data-service" />
-      </profile>
       <profile name="Annotation profile for dynamic-spec-service" enabled="true">
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
@@ -46,18 +35,38 @@
         </processorPath>
         <module name="static-spec-service" />
       </profile>
+      <profile name="Annotation profile for twin-digital" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <processorPath useClasspath="false">
+          <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/1.18.40/lombok-1.18.40.jar" />
+        </processorPath>
+        <module name="digital-aggregator-service" />
+        <module name="continuous-data-service" />
+      </profile>
+      <profile name="Annotation profile for user-service" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <processorPath useClasspath="false">
+          <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/1.18.40/lombok-1.18.40.jar" />
+          <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/1.18.40/lombok-1.18.40.jar" />
+        </processorPath>
+        <module name="user-service" />
+      </profile>
     </annotationProcessing>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="api-gateway" options="-parameters" />
-      <module name="car-service" options="-parameters" />
       <module name="config-server" options="-parameters" />
       <module name="continuous-data-service" options="-parameters" />
       <module name="digital-aggregator-service" options="-parameters" />
       <module name="discovery-server" options="-parameters" />
       <module name="dynamic-spec-service" options="-parameters" />
       <module name="static-spec-service" options="-parameters" />
+      <module name="user-service" options="-parameters" />
     </option>
   </component>
 </project>
